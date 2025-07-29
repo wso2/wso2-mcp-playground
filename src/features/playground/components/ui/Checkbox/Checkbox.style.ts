@@ -11,9 +11,9 @@
  * associated services.
  */
 
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
 
-export const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles((theme: any) => ({
   checkboxButton: {
     margin: theme.spacing(-1, 0),
   },

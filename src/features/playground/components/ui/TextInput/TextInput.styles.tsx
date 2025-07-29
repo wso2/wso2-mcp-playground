@@ -11,16 +11,17 @@
  * associated services.
  */
 
-import { alpha, makeStyles } from '@material-ui/core';
+import { alpha } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import { ITextInputProps } from './TextInput.types';
 
-export const useTextFiledStyles = makeStyles((theme) => ({
+export const useTextFiledStyles = makeStyles((theme: any) => ({
   root: {
-    padding: theme.spacing(0.5, 1.5),
+    padding: theme.spacing ? theme.spacing(0.5, 1.5) : '4px 12px',
     width: '100%',
-    minHeight: theme.spacing(5),
-    backgroundColor: theme.palette.common.white,
-    border: `1px solid ${theme.palette.grey[100]}`,
+    minHeight: theme.spacing ? theme.spacing(5) : '40px',
+    backgroundColor: theme.palette?.common?.white || '#fff',
+    border: `1px solid ${(theme.palette?.grey && theme.palette.grey[100]) || '#e0e0e0'}`,
     boxShadow: `0 1px 2px -1px ${alpha(
       theme.palette.common.black,
       0.08

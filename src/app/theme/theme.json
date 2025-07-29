@@ -1,6 +1,6 @@
 {
   "palette": {
-    "type": "light",
+    "mode": "light",
     "common": {
       "black": "#1d2028",
       "white": "#ffffff"
@@ -36,7 +36,7 @@
     }
   },
   "darkPalette": {
-    "type": "dark"
+    "mode": "dark"
   },
   "typography": {
     "h1": {
@@ -137,44 +137,54 @@
       "letterSpacing": "normal"
     }
   },
-  "props": {
+  "components": {
     "MuiButton": {
-      "disableRipple": true,
-      "disableFocusRipple": true
+      "defaultProps": {
+        "disableRipple": true,
+        "disableFocusRipple": true
+      }
     },
     "MuiDialog": {
-      "transitionDuration": {
-        "enter": 550,
-        "exit": 450
+      "defaultProps": {
+        "transitionDuration": {
+          "enter": 550,
+          "exit": 450
+        }
       }
-    }
-  },
-  "overrides": {
+    },
     "MuiTooltip": {
-      "tooltip": {
-        "height": "auto",
-        "borderRadius": 4,
-        "backgroundColor": "#40404B",
-        "boxShadow": "0 1px 10px 0 rgba(0,0,0,0.22)",
-        "fontSize": 12,
-        "color": "#FFFFFF",
-        "fontWeight": 400
+      "styleOverrides": {
+        "tooltip": {
+          "height": "auto",
+          "borderRadius": 4,
+          "backgroundColor": "#40404B",
+          "boxShadow": "0 1px 10px 0 rgba(0,0,0,0.22)",
+          "fontSize": 12,
+          "color": "#FFFFFF",
+          "fontWeight": 400
+        }
       }
     },
     "MuiBackdrop": {
-      "root": {
-        "backgroundColor": "rgba(230,231,235,0.9)"
+      "styleOverrides": {
+        "root": {
+          "backgroundColor": "rgba(230,231,235,0.9)"
+        }
       }
     },
     "MuiAppBar": {
-      "colorPrimary": {
-        "backgroundColor": "#ffffff",
-        "color": "#222228"
+      "styleOverrides": {
+        "colorPrimary": {
+          "backgroundColor": "#ffffff",
+          "color": "#222228"
+        }
       }
     },
     "MuiButton": {
-      "root": {
-        "textTransform": "none"
+      "styleOverrides": {
+        "root": {
+          "textTransform": "none"
+        }
       }
     }
   },

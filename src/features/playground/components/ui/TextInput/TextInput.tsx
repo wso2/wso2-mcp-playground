@@ -12,13 +12,14 @@
  * associated services.
  */
 
+import React from 'react';
 import {
   Box,
   InputBase,
   FormHelperText,
   Typography,
   CircularProgress,
-} from '@material-ui/core';
+} from '@mui/material';
 import clsx from 'clsx';
 import { forwardRef, ForwardRefRenderFunction, useState } from 'react';
 import { Info, Question } from '../Icons/generated';

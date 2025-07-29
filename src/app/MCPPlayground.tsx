@@ -1,23 +1,30 @@
-import {ThemeProvider} from '@material-ui/core/styles';
-import { StylesProvider, createGenerateClassName } from '@material-ui/core/styles';
+import React from 'react';
+import {ThemeProvider} from '@mui/material/styles';
+import { StyledEngineProvider } from '@mui/material/styles';
 import useChoreoTheme from './theme/Theme.ts';
-import Playground, { PlaygroundProps } from '../features/playground/Playground';
+import Playground from '../features/playground/Playground';
 
-// Create a scoped class name generator to avoid conflicts
-const generateClassName = createGenerateClassName({
-    productionPrefix: 'mcp-playground',
-    seed: 'mcp'
-});
+interface PlaygroundProps {
+  url?: string;
+  token?: string;
+  headerName?: string;
+  shouldSetHeaderNameExternally?: boolean;
+  isTokenFetching?: boolean;
+  isUrlFetching?: boolean;
+  handleTokenRegenerate?: () => void;
+  isMcpProxyWithOperationMapping?: boolean;
+  tokenPlaceholder?: string;
+}
 
 function MCPPlayground(props: PlaygroundProps) {
     const theme = useChoreoTheme(false);
     return (
         <div className="mcp-playground-root">
-            <StylesProvider generateClassName={generateClassName}>
+            <StyledEngineProvider injectFirst>
                 <ThemeProvider theme={theme}>
                     <Playground {...props}/>
                 </ThemeProvider>
-            </StylesProvider>
+            </StyledEngineProvider>
         </div>
     )
 }

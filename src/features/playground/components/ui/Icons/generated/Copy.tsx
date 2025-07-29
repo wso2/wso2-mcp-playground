@@ -14,7 +14,7 @@
  * associated services.
  */
 
-import { createSvgIcon } from '@material-ui/core';
+import { createSvgIcon } from '@mui/material';
 import * as React from 'react';
 
 export default createSvgIcon(

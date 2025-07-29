@@ -17,7 +17,7 @@ import {
   Checkbox as MUICheckbox,
   CheckboxProps as MUICheckboxProps,
   FormControlLabel,
-} from '@material-ui/core';
+} from '@mui/material';
 import clsx from 'clsx';
 import { useStyles } from './Checkbox.style';
 

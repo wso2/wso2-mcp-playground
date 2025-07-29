@@ -1,4 +1,5 @@
-import { Box, Tooltip, Typography } from '@material-ui/core';
+import React from 'react';
+import { Box, Tooltip, Typography } from '@mui/material';
 import { Clear } from './ui/Icons/generated';
 import Button from './ui/Button/Button';
 import IconButton from './ui/IconButton/IconButton';
@@ -31,7 +32,7 @@ const ListPane = <T extends object>({
     <Box className={classes.resultSection}>
       <Box className={classes.resultSectionHeader}>
         <Typography variant="h4">{title}</Typography>
-        <Box display="flex" gridGap={12}>
+        <Box display="flex" gap={3}>
           <Button
             onClick={listItems}
             disabled={isButtonDisabled}

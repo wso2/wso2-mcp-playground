@@ -15,7 +15,7 @@
 import {
   Tooltip as MUITooltipBase,
   TooltipProps as MUITooltipProps,
-} from '@material-ui/core';
+} from '@mui/material';
 import React from 'react';
 
 interface TooltipBaseProps extends MUITooltipProps {

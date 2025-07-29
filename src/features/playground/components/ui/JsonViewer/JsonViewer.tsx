@@ -12,7 +12,7 @@
  * associated services.
  */
 
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 import React from 'react';
 import ReactJson, { ReactJsonViewProps } from 'react-json-view';
 

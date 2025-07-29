@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Box, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { HistoryEvent } from '../lib/constants';
 import { useVerticalResize } from './hooks/useVerticalResize';
 import ResizeHandle from './ResizeHandle';
@@ -9,7 +9,7 @@ interface HistoryPanelProps {
   history: HistoryEvent[];
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: any) => ({
   historyContainer: {
     borderRadius: '8px 8px 0 0',
     border: '1px solid #e5e7eb',
@@ -108,7 +108,7 @@ const useStyles = makeStyles((theme) => ({
 
 const HistoryPanel: React.FC<HistoryPanelProps> = ({ history }) => {
   const classes = useStyles();
-  
+
   // Initialize vertical resize functionality
   const { height, isResizing, resizeHandleProps } = useVerticalResize({
     defaultHeight: 300,

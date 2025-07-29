@@ -3,10 +3,10 @@ import {
   ListToolsResult,
   Tool,
 } from '@modelcontextprotocol/sdk/types.js';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import React, { useEffect, useState } from 'react';
-import { Box, CircularProgress, Grid, Typography } from '@material-ui/core';
+import { Box, CircularProgress, Grid, Typography } from '@mui/material';
 import Notification from './ui/Notification/Notification';
 import { Promote } from './ui/Icons/generated';
 import TextInput from './ui/TextInput/TextInput';

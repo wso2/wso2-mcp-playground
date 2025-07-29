@@ -11,7 +11,7 @@
  * entered into with WSO2 governing the purchase of this software and any
  * associated services.
  */
-import { Box, IconButton, Typography } from '@material-ui/core';
+import { Box, IconButton, Typography } from '@mui/material';
 import React from 'react';
 import clsx from 'clsx';
 import {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, CircularProgress, InputAdornment } from '@material-ui/core';
+import { Box, CircularProgress, InputAdornment } from '@mui/material';
 import IconButton from './ui/IconButton/IconButton';
 import TextInput from './ui/TextInput/TextInput';
 import Button from './ui/Button/Button';
@@ -56,8 +56,8 @@ const Sidebar = ({
   return (
     <Box>
       <Box width="100%" maxWidth={400} mx="auto">
-        <Box display="flex" flexDirection="column" gridGap={3}>
-          <Box mb={2} display="flex" flexDirection="column" gridGap={12}>
+        <Box display="flex" flexDirection="column" gap={3}>
+          <Box mb={2} display="flex" flexDirection="column" gap={3}>
             {isUrlFetching ? (
               <Box display="flex" justifyContent="center" alignItems="center" minHeight="60px">
                 <CircularProgress size={30} />
@@ -125,7 +125,7 @@ const Sidebar = ({
             )}
           </Box>
           <Box>
-            <Box display="flex" gridGap={8}>
+            <Box display="flex" gap={2}>
               {connectionStatus === 'connected' && (
                 <>
                   <Button
@@ -173,7 +173,7 @@ const Sidebar = ({
               display="flex"
               justifyContent="center"
               alignItems="center"
-              gridGap={12}
+              gap={3}
             >
               {connectionStatus !== 'connecting' && (
                 <Box

@@ -11,10 +11,11 @@
  * associated services.
  */
 
-import { IconButton } from '@material-ui/core';
+import { IconButton } from '@mui/material';
 import { useSnackbar, SnackbarKey } from 'notistack';
 import { CloseIcon } from '../assets/icons';
 import useStyles from './SnackbarCloseButton.styles';
+import React from 'react';
 
 interface SnackbarCloseButtonProps {
   snackbarKey: SnackbarKey;

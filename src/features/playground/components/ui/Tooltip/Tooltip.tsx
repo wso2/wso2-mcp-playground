@@ -12,13 +12,14 @@
  * associated services.
  */
 
-import { Box, Divider, Link, Typography } from '@material-ui/core';
+import React from 'react';
+import { Box, Divider, Link, Typography } from '@mui/material';
 import clsx from 'clsx';
-import { TooltipProps } from '@material-ui/core/Tooltip';
+import { TooltipProps } from '@mui/material/Tooltip';
 import TooltipBase from './TooltipBase';
 import { useStyles, useToolTipBaseStyles } from './Tooltip.styles';
 
-interface InfoTooltipProps extends TooltipProps {
+interface InfoTooltipProps extends Omit<TooltipProps, 'content'> {
   darken?: boolean;
   disabled?: boolean;
   heading?: string | React.ReactNode;

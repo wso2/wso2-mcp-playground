@@ -11,7 +11,7 @@
  * associated services.
  */
 
-import { styled } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
 import { SnackbarProvider } from 'notistack';
 
 export const ChoreoSnackbarProvider = styled(SnackbarProvider)(() => ({
