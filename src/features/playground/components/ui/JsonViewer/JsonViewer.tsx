@@ -14,7 +14,7 @@
 
 import { Box } from '@mui/material';
 import React from 'react';
-import ReactJson, { ReactJsonViewProps } from 'react-json-view';
+import ReactJson, { ReactJsonViewProps } from '@microlink/react-json-view';
 
 interface JsonViewerProps extends ReactJsonViewProps {
   maxHeight?: number | string;
