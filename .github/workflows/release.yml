@@ -61,6 +61,8 @@ jobs:
 
       - name: Bump version and create tag
         run: |
+          git add .
+          git commit -m "Release: Bump version to ${{ github.event.inputs.Type }}"
           npm version ${{ github.event.inputs.Type }}
           git push --follow-tags
 
