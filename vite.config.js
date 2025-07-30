@@ -2,10 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  plugins: [react({
-    // React 18 support
-    jsxRuntime: 'automatic',
-  })],
+  plugins: [react()],
   build: {
     lib: {
       entry: 'src/index.js',
@@ -21,10 +18,10 @@ export default defineConfig({
           'react-dom': 'ReactDOM'
         }
       }
-    },
-    target: 'es2015' // Ensure modern JS support
+    }
   },
   define: {
     'process.env.NODE_ENV': JSON.stringify('production'),
+    process: '{}', // if needed, but usually NODE_ENV is enough
   }
 })
