@@ -11,9 +11,9 @@
  * associated services.
  */
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core';
+import { createStyles, makeStyles } from '@mui/styles';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme: any) =>
   createStyles({
     closeButton: {
       position: 'absolute',

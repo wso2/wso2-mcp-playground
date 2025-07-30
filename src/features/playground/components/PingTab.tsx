@@ -1,4 +1,5 @@
-import { Box, Typography } from '@material-ui/core';
+import React from 'react';
+import { Box, Typography } from '@mui/material';
 import Button from './ui/Button/Button';
 import { TabsContent } from './ui/tabs';
 
@@ -11,7 +12,7 @@ const PingTab = ({ onPingClick }: { onPingClick: () => void }) => (
           justifyContent="center"
           alignItems="center"
           flexDirection="column"
-          gridGap={8}
+          gap={2}
         >
           <Button
             onClick={onPingClick}

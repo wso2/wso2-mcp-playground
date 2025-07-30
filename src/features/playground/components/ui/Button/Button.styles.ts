@@ -11,9 +11,10 @@
  * associated services.
  */
 
-import { alpha, createStyles, makeStyles, Theme } from '@material-ui/core';
+import { alpha } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
-export const useButtonStyles = makeStyles((theme: Theme) =>
+export const useButtonStyles = makeStyles((theme: any) =>
   createStyles({
     commons: {
       boxShadow: `0 1px 2px  ${alpha(theme.palette.common.black, 0.15)}`,

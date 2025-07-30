@@ -11,10 +11,11 @@
  * entered into with WSO2 governing the purchase of this software and any
  * associated services.
  */
+import React from 'react';
 import {
   IconButton as MUIIconButton,
   IconButtonProps as MUIIconButtonProps,
-} from '@material-ui/core';
+} from '@mui/material';
 import clsx from 'clsx';
 import useStyles from './IconButton.styles';
 

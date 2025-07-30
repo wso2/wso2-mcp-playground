@@ -11,21 +11,24 @@
  * associated services.
  */
 
-import { InputProps, TooltipProps } from '@material-ui/core';
-import { Variant } from '@material-ui/core/styles/createTypography';
+import { InputProps } from '@mui/material/Input';
+import { TooltipProps } from '@mui/material/Tooltip';
+import { Variant } from '@mui/material/styles/createTypography';
+import { OverridableStringUnion } from '@mui/types';
+import { InputBasePropsSizeOverrides } from '@mui/material/InputBase';
 
-export interface ITextInputProps extends InputProps {
+export interface ITextInputProps extends Omit<InputProps, 'size'> {
   width?: string | number;
   label?: React.ReactNode;
   helperText?: React.ReactNode;
   optional?: boolean;
+  size?: OverridableStringUnion<'small' | 'medium' | 'large', InputBasePropsSizeOverrides>;
   loading?: boolean;
   tooltip?: React.ReactNode;
   info?: React.ReactNode;
   tooltipPlacement?: TooltipProps['placement'];
   inputTooltip?: React.ReactNode;
   typography?: Variant;
-  size?: 'small' | 'medium' | 'large';
   actions?: React.ReactNode;
   testId: string;
   variant?: 'plain' | 'default';

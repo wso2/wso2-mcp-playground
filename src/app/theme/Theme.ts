@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { responsiveFontSizes, createTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { responsiveFontSizes, createTheme } from '@mui/material/styles';
 import systemTheme from './systemTheme';
 
 export default function useChoreoTheme(userPreference: null | boolean = null) {

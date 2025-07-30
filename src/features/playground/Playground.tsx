@@ -7,9 +7,9 @@ import {
   Tool,
 } from '@modelcontextprotocol/sdk/types.js';
 import React, { useEffect, useRef, useState } from 'react';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import { z } from 'zod';
-import { Box, Grid, Typography } from '@material-ui/core';
+import { Box, Grid, Typography } from '@mui/material';
 import { MenuSubAPIManagement } from './components/ui/Icons/generated';
 import MCPPlaygroundConnect from './components/ui/Images/Templates/MCPPlaygroundConnect.svg';
 import { cacheToolOutputSchemas } from './utils/schemaUtils';

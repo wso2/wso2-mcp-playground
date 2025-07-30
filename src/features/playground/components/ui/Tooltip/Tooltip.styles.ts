@@ -11,9 +11,9 @@
  * associated services.
  */
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/';
+import { createStyles, makeStyles } from '@mui/styles';
 
-export const useToolTipBaseStyles = makeStyles((theme: Theme) =>
+export const useToolTipBaseStyles = makeStyles((theme: any) =>
   createStyles({
     infoTooltipDark: {
       color: theme.palette.grey[100],
@@ -35,7 +35,7 @@ export const useToolTipBaseStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const useStyles = makeStyles((theme: Theme) =>
+export const useStyles = makeStyles((theme: any) =>
   createStyles({
     divider: {
       marginTop: theme.spacing(1),

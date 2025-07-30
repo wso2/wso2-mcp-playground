@@ -11,10 +11,11 @@
  * entered into with WSO2 governing the purchase of this software and any
  * associated services.
  */
+import React from 'react';
 import {
   Button as MUIButton,
   ButtonProps as MUIButtonProps,
-} from '@material-ui/core';
+} from '@mui/material';
 import clsx from 'clsx';
 import useStyles from './Button.styles';
 

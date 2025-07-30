@@ -11,9 +11,10 @@
  * associated services.
  */
 
-import { alpha, createStyles, makeStyles, Theme } from '@material-ui/core';
+import { alpha } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme: any) =>
   createStyles({
     root: {
       color: theme.palette.secondary.dark,

@@ -1,9 +1,10 @@
+import React from 'react';
 import {
   CallToolResultSchema,
   CompatibilityCallToolResult,
   Tool,
 } from '@modelcontextprotocol/sdk/types.js';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 import JsonView from './JsonView';
 import { validateToolOutput, hasOutputSchema } from '../utils/schemaUtils';
 
