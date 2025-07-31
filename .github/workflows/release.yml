@@ -48,9 +48,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Rollup for amd64 Linux
-        run: npm install @rollup/rollup-linux-x64-gnu
-
       - name: Build package
         run: npm run build
 
@@ -61,8 +58,6 @@ jobs:
 
       - name: Bump version and create tag
         run: |
-          git add .
-          git commit -m "Release: Bump version to ${{ github.event.inputs.Type }}"
           npm version ${{ github.event.inputs.Type }}
           git push --follow-tags
 
