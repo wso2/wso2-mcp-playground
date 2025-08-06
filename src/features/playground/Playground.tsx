@@ -5,21 +5,21 @@ import {
   EmptyResultSchema,
   ListToolsResultSchema,
   Tool,
-} from '@modelcontextprotocol/sdk/types.js';
-import React, { useEffect, useRef, useState } from 'react';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import { z } from 'zod';
-import { Box, Grid, Typography } from '@mui/material';
-import { MenuSubAPIManagement } from './components/ui/Icons/generated';
-import MCPPlaygroundConnect from './components/ui/Images/Templates/MCPPlaygroundConnect.svg';
-import { cacheToolOutputSchemas } from './utils/schemaUtils';
-import { useConnection } from './lib/hooks/useConnection';
-import { Tabs, TabsList, TabsTrigger } from './components/ui/tabs';
-import PingTab from './components/PingTab';
-import Sidebar from './components/Sidebar';
-import ToolsTab from './components/ToolsTab';
-import HistoryPanel from './components/HistoryPanel';
-import { useStyles } from './style';
+} from "@modelcontextprotocol/sdk/types.js";
+import React, { useEffect, useRef, useState } from "react";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import { z } from "zod";
+import { Box, Grid, Typography } from "@mui/material";
+import { MenuSubAPIManagement } from "./components/ui/Icons/generated";
+import MCPPlaygroundConnect from "./components/ui/Images/Templates/MCPPlaygroundConnect.svg";
+import { cacheToolOutputSchemas } from "./utils/schemaUtils";
+import { useConnection } from "./lib/hooks/useConnection";
+import { Tabs, TabsList, TabsTrigger } from "./components/ui/tabs";
+import PingTab from "./components/PingTab";
+import Sidebar from "./components/Sidebar";
+import ToolsTab from "./components/ToolsTab";
+import HistoryPanel from "./components/HistoryPanel";
+import { useStyles } from "./style";
 
 interface PlaygroundProps {
   url?: string;
@@ -31,6 +31,10 @@ interface PlaygroundProps {
   handleTokenRegenerate?: () => void;
   isMcpProxyWithOperationMapping?: boolean;
   tokenPlaceholder?: string;
+  disableTitle?: boolean;
+  enableConfiguration?: boolean;
+  onConfigurationClick?: () => void;
+  disableConnectionButton?: boolean;
 }
 
 const Playground = ({
@@ -43,11 +47,17 @@ const Playground = ({
   handleTokenRegenerate,
   isMcpProxyWithOperationMapping,
   tokenPlaceholder,
+  disableTitle,
+  enableConfiguration,
+  onConfigurationClick,
+  disableConnectionButton
 }: PlaygroundProps) => {
   const classes = useStyles();
   const [token, setToken] = useState<string>();
   const [url, setUrl] = useState<string>();
-  const [headerName, setHeaderName] = useState<string>(initialHeaderName|| 'Authorization');
+  const [headerName, setHeaderName] = useState<string>(
+    initialHeaderName || "Authorization"
+  );
   const [tools, setTools] = useState<Tool[]>([]);
   const [toolResult, setToolResult] =
     useState<CompatibilityCallToolResult | null>(null);
@@ -58,11 +68,11 @@ const Playground = ({
   });
 
   useEffect(() => {
-    setUrl(initialUrl || '');
+    setUrl(initialUrl || "");
   }, [initialUrl]);
 
   useEffect(() => {
-    setToken(initialToken || '');
+    setToken(initialToken || "");
   }, [initialToken]);
 
   const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
@@ -114,32 +124,32 @@ const Playground = ({
   };
 
   const listTools = async () => {
-    addHistoryEvent('info', 'listTools', 'Fetching tools from MCP server', {
+    addHistoryEvent("info", "listTools", "Fetching tools from MCP server", {
       nextCursor: nextToolCursor,
     });
 
     const response = await sendMCPRequest(
       {
-        method: 'tools/list' as const,
+        method: "tools/list" as const,
         params: nextToolCursor ? { cursor: nextToolCursor } : {},
       },
       ListToolsResultSchema,
-      'tools'
+      "tools"
     );
     setTools(response.tools);
     setNextToolCursor(response.nextCursor);
     // Cache output schemas for validation
     cacheToolOutputSchemas(response.tools);
 
-    addHistoryEvent('info', 'listTools', 'Tools fetched successfully', {
+    addHistoryEvent("info", "listTools", "Tools fetched successfully", {
       toolCount: response.tools.length,
       hasNextCursor: !!response.nextCursor,
-      toolNames: response.tools.map(tool => tool.name),
+      toolNames: response.tools.map((tool) => tool.name),
     });
   };
 
   const callTool = async (name: string, params: Record<string, unknown>) => {
-    addHistoryEvent('info', 'callTool', `Calling MCP tool: ${name}`, {
+    addHistoryEvent("info", "callTool", `Calling MCP tool: ${name}`, {
       toolName: name,
       parameters: params,
       progressToken: progressTokenRef.current + 1,
@@ -148,7 +158,7 @@ const Playground = ({
     try {
       const response = await sendMCPRequest(
         {
-          method: 'tools/call' as const,
+          method: "tools/call" as const,
           params: {
             name,
             arguments: params,
@@ -158,19 +168,26 @@ const Playground = ({
           },
         },
         CompatibilityCallToolResultSchema,
-        'tools'
+        "tools"
       );
       setToolResult(response);
 
-      addHistoryEvent('info', 'callTool', `Tool call completed successfully: ${name}`, {
-        toolName: name,
-        hasContent: !!response.content,
-        contentLength: Array.isArray(response.content) ? response.content.length : 0,
-        isError: response.isError || false,
-      });
+      addHistoryEvent(
+        "info",
+        "callTool",
+        `Tool call completed successfully: ${name}`,
+        {
+          toolName: name,
+          hasContent: !!response.content,
+          contentLength: Array.isArray(response.content)
+            ? response.content.length
+            : 0,
+          isError: response.isError || false,
+        }
+      );
     } catch (e) {
       const errorMessage = (e as Error).message ?? String(e);
-      addHistoryEvent('error', 'callTool', `Tool call failed: ${name}`, {
+      addHistoryEvent("error", "callTool", `Tool call failed: ${name}`, {
         toolName: name,
         error: errorMessage,
         parameters: params,
@@ -179,7 +196,7 @@ const Playground = ({
       setToolResult({
         content: [
           {
-            type: 'text',
+            type: "text",
             text: errorMessage,
           },
         ],
@@ -190,9 +207,7 @@ const Playground = ({
 
   return (
     <Box className={classes.componentLevelPageContainer}>
-      <Typography variant="h3">
-        MCP Playground
-      </Typography>
+      {!disableTitle && <Typography variant="h3">MCP Playground</Typography>}
       <Grid container md={12}>
         <Grid item xs={12} md={3} className={classes.playgroundSlider}>
           <Sidebar
@@ -204,23 +219,28 @@ const Playground = ({
             setToken={setToken}
             headerName={headerName}
             setHeaderName={setHeaderName}
-            shouldSetHeaderNameExternally={shouldSetHeaderNameExternally || false}
+            shouldSetHeaderNameExternally={
+              shouldSetHeaderNameExternally || false
+            }
             isTokenFetching={isTokenFetching}
             isUrlFetching={isUrlFetching}
             handleTokenRegenerate={handleTokenRegenerate}
             onConnect={connectMcpServer}
             onDisconnect={disconnectMcpServer}
             tokenPlaceholder={tokenPlaceholder}
+            enableConfiguration={enableConfiguration}
+            onConfigurationClick={onConfigurationClick}
+            disableConnectionButton={disableConnectionButton}
           />
         </Grid>
         <Grid item xs={12} md={8} className={classes.playgroundRightSlider}>
           <Box
             className={classes.playgroundResult}
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              height: '100vh',
-              overflow: 'hidden'
+              display: "flex",
+              flexDirection: "column",
+              height: "100vh",
+              overflow: "hidden",
             }}
           >
             {mcpClient ? (
@@ -228,9 +248,9 @@ const Playground = ({
                 {/* Main Content Area - Scrollable */}
                 <Box
                   style={{
-                    flex: '1 1 auto',
-                    overflow: 'auto',
-                    minHeight: 0
+                    flex: "1 1 auto",
+                    overflow: "auto",
+                    minHeight: 0,
                   }}
                 >
                   <Tabs
@@ -262,20 +282,38 @@ const Playground = ({
                           </div>
                           <PingTab
                             onPingClick={() => {
-                              addHistoryEvent('info', 'ping', 'Sending ping to MCP server (no tools mode)');
+                              addHistoryEvent(
+                                "info",
+                                "ping",
+                                "Sending ping to MCP server (no tools mode)"
+                              );
                               sendMCPRequest(
                                 {
-                                  method: 'ping' as const,
+                                  method: "ping" as const,
                                 },
                                 EmptyResultSchema
-                              ).then(() => {
-                                addHistoryEvent('info', 'ping', 'Ping successful (no tools mode)');
-                              }).catch((e) => {
-                                addHistoryEvent('error', 'ping', 'Ping failed (no tools mode)', {
-                                  error: e instanceof Error ? e.message : String(e),
+                              )
+                                .then(() => {
+                                  addHistoryEvent(
+                                    "info",
+                                    "ping",
+                                    "Ping successful (no tools mode)"
+                                  );
+                                })
+                                .catch((e) => {
+                                  addHistoryEvent(
+                                    "error",
+                                    "ping",
+                                    "Ping failed (no tools mode)",
+                                    {
+                                      error:
+                                        e instanceof Error
+                                          ? e.message
+                                          : String(e),
+                                    }
+                                  );
+                                  console.error("Ping failed:", e);
                                 });
-                                console.error('Ping failed:', e);
-                              });
                             }}
                           />
                         </>
@@ -284,24 +322,28 @@ const Playground = ({
                           <ToolsTab
                             tools={tools}
                             listTools={() => {
-                              clearError('tools');
+                              clearError("tools");
                               listTools();
                             }}
                             clearTools={() => {
-                              addHistoryEvent('info', 'clearTools', 'Clearing tools cache');
+                              addHistoryEvent(
+                                "info",
+                                "clearTools",
+                                "Clearing tools cache"
+                              );
                               setTools([]);
                               setNextToolCursor(undefined);
                               // Clear cached output schemas
                               cacheToolOutputSchemas([]);
                             }}
                             callTool={async (name, params) => {
-                              clearError('tools');
+                              clearError("tools");
                               setToolResult(null);
                               await callTool(name, params);
                             }}
                             selectedTool={selectedTool}
                             setSelectedTool={(tool) => {
-                              clearError('tools');
+                              clearError("tools");
                               setSelectedTool(tool);
                               setToolResult(null);
                             }}
@@ -313,20 +355,38 @@ const Playground = ({
                           />
                           <PingTab
                             onPingClick={() => {
-                              addHistoryEvent('info', 'ping', 'Sending ping to MCP server');
+                              addHistoryEvent(
+                                "info",
+                                "ping",
+                                "Sending ping to MCP server"
+                              );
                               sendMCPRequest(
                                 {
-                                  method: 'ping' as const,
+                                  method: "ping" as const,
                                 },
                                 EmptyResultSchema
-                              ).then(() => {
-                                addHistoryEvent('info', 'ping', 'Ping successful');
-                              }).catch((e) => {
-                                addHistoryEvent('error', 'ping', 'Ping failed', {
-                                  error: e instanceof Error ? e.message : String(e),
+                              )
+                                .then(() => {
+                                  addHistoryEvent(
+                                    "info",
+                                    "ping",
+                                    "Ping successful"
+                                  );
+                                })
+                                .catch((e) => {
+                                  addHistoryEvent(
+                                    "error",
+                                    "ping",
+                                    "Ping failed",
+                                    {
+                                      error:
+                                        e instanceof Error
+                                          ? e.message
+                                          : String(e),
+                                    }
+                                  );
+                                  console.error("Ping failed:", e);
                                 });
-                                console.error('Ping failed:', e);
-                              });
                             }}
                           />
                         </>
@@ -338,8 +398,8 @@ const Playground = ({
                 {/* Fixed History Panel at Bottom */}
                 <Box
                   style={{
-                    flex: '0 0 auto',
-                    backgroundColor: '#fafafa'
+                    flex: "0 0 auto",
+                    backgroundColor: "#fafafa",
                   }}
                 >
                   <HistoryPanel history={history} />
@@ -351,10 +411,13 @@ const Playground = ({
                 flexDirection="column"
                 alignItems="center"
                 justifyContent="center"
-                style={{ flex: '1 1 auto' }}
+                style={{ flex: "1 1 auto" }}
               >
                 <Box>
-                  <img src={MCPPlaygroundConnect} alt="MCP Playground Connect" />
+                  <img
+                    src={MCPPlaygroundConnect}
+                    alt="MCP Playground Connect"
+                  />
                 </Box>
                 <Typography variant="h4">
                   Connect to an MCP server to start inspecting
