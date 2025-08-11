@@ -20,7 +20,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@microlink/react-json-view": "^1.26.2",
-    "@modelcontextprotocol/sdk": "1.12.1",
+    "@modelcontextprotocol/sdk": "^1.17.2",
     "@mui/icons-material": "^5.15.0",
     "@mui/material": "^5.18.0",
     "@mui/styles": "^5.15.0",
