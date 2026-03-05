@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import type { ThemeOptions } from '@mui/material/styles';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { StyledEngineProvider } from '@mui/material/styles';
@@ -20,7 +20,10 @@ interface PlaygroundProps {
 
 function MCPPlayground(props: PlaygroundProps) {
     const defaultTheme = useChoreoTheme(false);
-    const theme = props.theme ? createTheme(props.theme) : defaultTheme;
+    const theme = useMemo(
+        () => (props.theme ? createTheme(defaultTheme, props.theme) : defaultTheme),
+        [defaultTheme, props.theme]
+    );
     return (
         <div className="mcp-playground-root" style={{height:'100%'}}>
             <StyledEngineProvider injectFirst>
