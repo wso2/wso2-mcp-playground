@@ -11,7 +11,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { z } from "zod";
 import { Box, Grid, Typography } from "@mui/material";
 import { MenuSubAPIManagement } from "./components/ui/Icons/generated";
-import MCPPlaygroundConnect from "./components/ui/Images/Templates/MCPPlaygroundConnect.svg";
+import MCPPlaygroundConnectIcon from "./components/ui/Images/Templates/MCPPlaygroundConnectIcon";
 import { cacheToolOutputSchemas } from "./utils/schemaUtils";
 import { useConnection } from "./lib/hooks/useConnection";
 import { Tabs, TabsList, TabsTrigger } from "./components/ui/tabs";
@@ -239,8 +239,6 @@ const Playground = ({
             style={{
               display: "flex",
               flexDirection: "column",
-              height: "100vh",
-              overflow: "hidden",
             }}
           >
             {mcpClient ? (
@@ -414,10 +412,7 @@ const Playground = ({
                 style={{ flex: "1 1 auto" }}
               >
                 <Box>
-                  <img
-                    src={MCPPlaygroundConnect}
-                    alt="MCP Playground Connect"
-                  />
+                  <MCPPlaygroundConnectIcon style={{ width: '100%', maxWidth: 697 }} />
                 </Box>
                 <Typography variant="h4">
                   Connect to an MCP server to start inspecting
