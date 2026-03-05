@@ -17,6 +17,8 @@ import { useTheme } from '@mui/material/styles';
 const MCPPlaygroundConnectIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
   const theme = useTheme();
   const maskId = useId();
+  const titleId = useId();
+  const ariaLabel = props['aria-label'] ?? 'Connect to MCP server';
 
   // Theme-mapped colors
   const primary = theme.palette.primary.main;     
@@ -36,8 +38,12 @@ const MCPPlaygroundConnectIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props
       viewBox="0 0 697 262"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-label={ariaLabel}
+      aria-labelledby={props['aria-label'] ? undefined : titleId}
       {...props}
     >
+      {!props['aria-label'] && <title id={titleId}>Connect to MCP server</title>}
       <path d="M322.712 180.656L332 164L321.904 172.125L317.462 169.687L311 190L319.481 179.031L322.712 180.656Z" fill={white} />
       <path d="M372.5 80.5L361 101L373.5 91L379 94L387 69L376.5 82.5L372.5 80.5Z" fill={white} />
       <path d="M372.803 157.518L381 176L371.574 166.143L365.426 167.786L356 153L365.426 159.982L372.803 157.518Z" fill={primary} />
