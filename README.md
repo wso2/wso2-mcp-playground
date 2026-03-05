@@ -166,7 +166,7 @@ Once connected to an MCP server, you can:
 
 - Node.js 16+
 - React 17+
-- Material-UI v4
+- Material-UI v5
 
 ### Local Development
 
