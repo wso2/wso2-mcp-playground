@@ -78,9 +78,15 @@ const Button = <C extends React.ElementType = 'button'>(
 
   const isSmall = size === 'small';
   const isTiny = size === 'tiny';
+  const muiVariant: MUIButtonProps['variant'] = isOutlined
+    ? 'outlined'
+    : isContained
+      ? 'contained'
+      : 'text';
 
   return (
     <MUIButton
+      variant={muiVariant}
       classes={{
         root: clsx({
           [classes.commons]: true,
