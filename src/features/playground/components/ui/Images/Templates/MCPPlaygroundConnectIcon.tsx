@@ -11,13 +11,24 @@
  * associated services.
  */
 
-import React, { useId } from 'react';
+import React, { useRef } from 'react';
 import { useTheme } from '@mui/material/styles';
+
+let mcpPlaygroundConnectIconIdCounter = 0;
+
+const useStableSvgId = (prefix: string): string => {
+  const idRef = useRef<string | null>(null);
+  if (idRef.current === null) {
+    mcpPlaygroundConnectIconIdCounter += 1;
+    idRef.current = `${prefix}-${mcpPlaygroundConnectIconIdCounter}`;
+  }
+  return idRef.current;
+};
 
 const MCPPlaygroundConnectIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
   const theme = useTheme();
-  const maskId = useId();
-  const titleId = useId();
+  const maskId = useStableSvgId('mcp-playground-connect-mask');
+  const titleId = useStableSvgId('mcp-playground-connect-title');
   const ariaLabel = props['aria-label'] ?? 'Connect to MCP server';
 
   // Theme-mapped colors
