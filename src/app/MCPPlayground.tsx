@@ -56,7 +56,7 @@ function MCPPlayground(props: PlaygroundProps) {
     );
 
     const withJssIsolation = (
-        <StylesProvider generateClassName={mcpGenerateClassName}>
+        <StylesProvider generateClassName={mcpGenerateClassName} injectFirst={injectStylesFirst}>
             {maybeWithStyledEngine}
         </StylesProvider>
     );
