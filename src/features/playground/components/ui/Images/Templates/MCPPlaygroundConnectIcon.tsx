@@ -45,15 +45,15 @@ const MCPPlaygroundConnectIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props
 
   return (
     <svg
-      {...restProps}
-      width="697"
-      height="262"
-      viewBox="0 0 697 262"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      role="img"
-      aria-label={ariaLabel}
-      aria-labelledby={ariaLabelProp ? undefined : titleId}
+    width="697"
+    height="262"
+    viewBox="0 0 697 262"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label={ariaLabel}
+    aria-labelledby={ariaLabelProp ? undefined : titleId}
+    {...restProps}
     >
       {!ariaLabelProp && <title id={titleId}>Connect to MCP server</title>}
       <path d="M322.712 180.656L332 164L321.904 172.125L317.462 169.687L311 190L319.481 179.031L322.712 180.656Z" fill={white} />
