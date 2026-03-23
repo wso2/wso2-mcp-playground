@@ -47,6 +47,9 @@ function MCPPlayground(props: PlaygroundProps) {
         </ThemeProvider>
     );
 
+    // Both StyledEngineProvider (Emotion/MUI v5) and StylesProvider (JSS/@mui/styles) are active
+    // because makeStyles is still used across the component library. injectFirst is intentionally
+    // applied to both to ensure correct style injection ordering.
     const maybeWithStyledEngine = injectStylesFirst ? (
         <StyledEngineProvider injectFirst>
             {content}
