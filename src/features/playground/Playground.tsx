@@ -10,8 +10,10 @@ import React, { useEffect, useRef, useState } from "react";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { z } from "zod";
 import { Box, Grid, Typography } from "@mui/material";
+import type { ThemeOptions } from "@mui/material/styles";
 import { MenuSubAPIManagement } from "./components/ui/Icons/generated";
-import MCPPlaygroundConnect from "./components/ui/Images/Templates/MCPPlaygroundConnect.svg";
+import MCPPlaygroundConnectIcon from "./components/ui/Images/Templates/MCPPlaygroundConnectIcon";
+import MCPPlaygroundConnect from "./components/ui/Images/Templates/MCPPlaygroundConnect.svg"
 import { cacheToolOutputSchemas } from "./utils/schemaUtils";
 import { useConnection } from "./lib/hooks/useConnection";
 import { Tabs, TabsList, TabsTrigger } from "./components/ui/tabs";
@@ -35,6 +37,7 @@ interface PlaygroundProps {
   enableConfiguration?: boolean;
   onConfigurationClick?: () => void;
   disableConnectionButton?: boolean;
+  theme?: ThemeOptions;
 }
 
 const Playground = ({
@@ -50,7 +53,8 @@ const Playground = ({
   disableTitle,
   enableConfiguration,
   onConfigurationClick,
-  disableConnectionButton
+  disableConnectionButton,
+  theme,
 }: PlaygroundProps) => {
   const classes = useStyles();
   const [token, setToken] = useState<string>();
@@ -239,8 +243,6 @@ const Playground = ({
             style={{
               display: "flex",
               flexDirection: "column",
-              height: "100vh",
-              overflow: "hidden",
             }}
           >
             {mcpClient ? (
@@ -414,10 +416,11 @@ const Playground = ({
                 style={{ flex: "1 1 auto" }}
               >
                 <Box>
-                  <img
-                    src={MCPPlaygroundConnect}
-                    alt="MCP Playground Connect"
-                  />
+                  {theme ? (
+                    <MCPPlaygroundConnectIcon style={{ width: '100%', maxWidth: 697 }} />
+                  ) : (
+                    <img src={MCPPlaygroundConnect} alt="Connect to MCP server" />
+                  )}
                 </Box>
                 <Typography variant="h4">
                   Connect to an MCP server to start inspecting

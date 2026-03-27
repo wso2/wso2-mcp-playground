@@ -19,6 +19,7 @@ export const useStyles = makeStyles((theme: any) => ({
     flexDirection: 'column',
     gap: theme.spacing(2),
     padding: theme.spacing(3),
+    height: '100%',
   },
   playgroundSlider: {
     border: `1px solid ${theme.palette.grey[200]}`,
@@ -36,7 +37,7 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   playgroundResult: {
     overflow: 'auto',
-    minHeight: theme.spacing(90),
+    height: '100%',
     borderBottom: `1px solid ${theme.palette.grey[200]}`,
   },
   tabsList: {

@@ -95,19 +95,49 @@ function CustomAuthExample() {
   );
 }
 ```
+### Theme Customization
+
+You can fully customize the appearance of MCP Playground by passing a MUI `ThemeOptions` object via the `theme` prop.
+
+```jsx
+import MCPPlayground from "mcp-playground";
+
+const theme = {
+  palette: {
+    primary: {
+      light: "#5f89d4",
+      main: "#2f5fa7",
+      dark: "#204377",
+    },
+    secondary: {
+      light: "#eceff4",
+      main: "#6b7085",
+      dark: "#2e313f",
+    },
+    warning: {
+      main: "#ff9d52",
+    },
+  },
+};
+
+function App() {
+  return <MCPPlayground theme={theme} />;
+}
+```
 
 ### Configuration Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `url` | `string` | `undefined` | The MCP server endpoint URL to connect to |
-| `token` | `string` | `undefined` | The authentication token for requests |
-| `headerName` | `string` | `'Authorization'` | HTTP header name for authentication |
-| `shouldSetHeaderNameExternally` | `boolean` | `false` | Whether parent component manages header name |
-| `isTokenFetching` | `boolean` | `false` | Shows loading state for token |
-| `isUrlFetching` | `boolean` | `false` | Shows loading state for URL |
-| `handleTokenRegenerate` | `() => void` | `undefined` | Callback for token regeneration |
-| `tokenPlaceholder` | `string` | `'Add Your Token'` | Placeholder text for token input |
+| Prop                            | Type           | Default            | Description                                  |
+| ------------------------------- | -------------- | ------------------ | -------------------------------------------- |
+| `url`                           | `string`       | `undefined`        | The MCP server endpoint URL to connect to    |
+| `token`                         | `string`       | `undefined`        | The authentication token for requests        |
+| `headerName`                    | `string`       | `'Authorization'`  | HTTP header name for authentication          |
+| `shouldSetHeaderNameExternally` | `boolean`      | `false`            | Whether parent component manages header name |
+| `isTokenFetching`               | `boolean`      | `false`            | Shows loading state for token                |
+| `isUrlFetching`                 | `boolean`      | `false`            | Shows loading state for URL                  |
+| `handleTokenRegenerate`         | `() => void`   | `undefined`        | Callback for token regeneration              |
+| `tokenPlaceholder`              | `string`       | `'Add Your Token'` | Placeholder text for token input             |
+| `theme`                         | `ThemeOptions` | `undefined`        | Custom MUI theme to override default styling |
 
 ### Testing MCP Tools
 
@@ -136,7 +166,7 @@ Once connected to an MCP server, you can:
 
 - Node.js 16+
 - React 17+
-- Material-UI v4
+- Material-UI v5
 
 ### Local Development
 
