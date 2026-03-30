@@ -67,7 +67,7 @@ jobs:
         run: |
           npm whoami
           npm config get registry
-          npm owner ls @wso2-org/mcp-playground || true
-          npm access list collaborators @wso2-org/mcp-playground || true
+          node -p "require('./package.json').name"
           node -p "require('./package.json').version"
+          cat ~/.npmrc || true
           npm publish --access public --verbose
