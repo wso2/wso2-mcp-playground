@@ -56,18 +56,13 @@ jobs:
           git config --global user.email "${{ secrets.WSO2_APIM_BOT_EMAIL }}"
           git config --global user.name "${{ secrets.WSO2_APIM_BOT_USERNAME }}"
 
-      # - name: Bump version and create tag
-      #   run: |
-      #     npm version ${{ github.event.inputs.Type }}
-      #     git push --follow-tags
+      - name: Bump version and create tag
+        run: |
+          npm version ${{ github.event.inputs.Type }}
+          git push --follow-tags
 
       - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          npm whoami
-          npm config get registry
-          node -p "require('./package.json').name"
-          node -p "require('./package.json').version"
-          cat ~/.npmrc || true
           npm publish --access public --verbose
