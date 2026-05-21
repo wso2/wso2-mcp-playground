@@ -213,7 +213,7 @@ const Playground = ({
     <Box className={classes.componentLevelPageContainer}>
       {!disableTitle && <Typography variant="h3">MCP Playground</Typography>}
       <Grid container md={12}>
-        <Grid item xs={12} md={3} className={classes.playgroundSlider}>
+        <Grid item xs={12} md={4} className={classes.playgroundSlider}>
           <Sidebar
             connectionStatus={connectionStatus}
             connectionError={connectionError}
