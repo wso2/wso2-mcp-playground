@@ -155,7 +155,7 @@ const Sidebar = ({
               <Box mt={1}>
                 <Button
                   fullWidth
-                  variant="subtle"
+                  variant="outlined"
                   onClick={handleTokenRegenerate}
                   data-testid="auth-button"
                   aria-expanded={showBearerToken}
