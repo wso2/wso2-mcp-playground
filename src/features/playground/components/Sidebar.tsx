@@ -4,12 +4,14 @@ import {
   CircularProgress,
   InputAdornment,
 } from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
 import IconButton from "./ui/IconButton/IconButton";
 import TextInput from "./ui/TextInput/TextInput";
 import Switcher from "./ui/Switcher/Switcher";
 import Button from "./ui/Button/Button";
 import {
   Configuration,
+  Copy,
   HidePassword,
   MenuLogout,
   Refresh,
@@ -66,9 +68,35 @@ const Sidebar = ({
 }: SidebarProps) => {
   const [showBearerToken, setShowBearerToken] = useState(false);
   const [showPassword, toggleInputType] = React.useState(false);
+  const [copiedField, setCopiedField] = useState<"url" | "token" | null>(null);
   const handleEndButtonClick = () => {
     toggleInputType(!showPassword);
   };
+
+  const handleCopy = (field: "url" | "token", value?: string) => {
+    if (!value) return;
+    navigator.clipboard.writeText(value).then(() => {
+      setCopiedField(field);
+      setTimeout(() => {
+        setCopiedField((current) => (current === field ? null : current));
+      }, 1500);
+    });
+  };
+
+  const renderCopyAdornment = (field: "url" | "token", value?: string) => (
+    <InputAdornment position="end">
+      <IconButton
+        onClick={() => handleCopy(field, value)}
+        size="small"
+        variant="text"
+        color="primary"
+        testId={`copy-${field}`}
+        disabled={!value}
+      >
+        {copiedField === field ? <CheckIcon fontSize="small" /> : <Copy />}
+      </IconButton>
+    </InputAdornment>
+  );
 
   return (
     <Box>
@@ -106,6 +134,7 @@ const Sidebar = ({
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 placeholder="Enter URL"
+                endAdornment={renderCopyAdornment("url", url)}
               />
             )}
             {shouldSetHeaderNameExternally && (
@@ -146,6 +175,16 @@ const Sidebar = ({
                       testId="secret"
                     >
                       {showPassword ? <ShowPassword /> : <HidePassword />}
+                    </IconButton>
+                    <IconButton
+                      onClick={() => handleCopy("token", token)}
+                      size="small"
+                      variant="text"
+                      color="primary"
+                      testId="copy-token"
+                      disabled={!token}
+                    >
+                      {copiedField === "token" ? <CheckIcon fontSize="small" /> : <Copy />}
                     </IconButton>
                   </InputAdornment>
                 }
