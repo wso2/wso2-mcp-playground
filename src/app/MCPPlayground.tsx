@@ -6,7 +6,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { StyledEngineProvider } from '@mui/material/styles';
 import { StylesProvider, createGenerateClassName } from '@mui/styles';
 import useChoreoTheme from './theme/Theme.ts';
-import Playground from '../features/playground/Playground';
+import Playground, { Switcher } from '../features/playground/Playground';
 
 const mcpGenerateClassName = createGenerateClassName({
     productionPrefix: 'mcp',
@@ -23,6 +23,8 @@ interface PlaygroundProps {
     handleTokenRegenerate?: () => void;
     isMcpProxyWithOperationMapping?: boolean;
     tokenPlaceholder?: string;
+    endpointSwitcher?: Switcher;
+    visibilitySwitcher?: Switcher;
     theme?: ThemeOptions;
     injectStylesFirst?: boolean;
     emotionCache?: EmotionCache;

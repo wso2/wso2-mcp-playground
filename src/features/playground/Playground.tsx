@@ -23,6 +23,18 @@ import ToolsTab from "./components/ToolsTab";
 import HistoryPanel from "./components/HistoryPanel";
 import { useStyles } from "./style";
 
+export type SwitcherOption = {
+  label: string;
+  value: string;
+};
+
+export type Switcher = {
+  label?: string;
+  options: SwitcherOption[];
+  value: string;
+  onChange: (value: string) => void;
+};
+
 interface PlaygroundProps {
   url?: string;
   token?: string;
@@ -37,6 +49,8 @@ interface PlaygroundProps {
   enableConfiguration?: boolean;
   onConfigurationClick?: () => void;
   disableConnectionButton?: boolean;
+  endpointSwitcher?: Switcher;
+  visibilitySwitcher?: Switcher;
   theme?: ThemeOptions;
 }
 
@@ -54,6 +68,8 @@ const Playground = ({
   enableConfiguration,
   onConfigurationClick,
   disableConnectionButton,
+  endpointSwitcher,
+  visibilitySwitcher,
   theme,
 }: PlaygroundProps) => {
   const classes = useStyles();
@@ -235,6 +251,8 @@ const Playground = ({
             enableConfiguration={enableConfiguration}
             onConfigurationClick={onConfigurationClick}
             disableConnectionButton={disableConnectionButton}
+            endpointSwitcher={endpointSwitcher}
+            visibilitySwitcher={visibilitySwitcher}
           />
         </Grid>
         <Grid item xs={12} md={8} className={classes.playgroundRightSlider}>

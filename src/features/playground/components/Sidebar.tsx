@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, CircularProgress, InputAdornment } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  InputAdornment,
+} from "@mui/material";
 import IconButton from "./ui/IconButton/IconButton";
 import TextInput from "./ui/TextInput/TextInput";
+import Switcher from "./ui/Switcher/Switcher";
 import Button from "./ui/Button/Button";
 import {
   Configuration,
@@ -12,6 +17,7 @@ import {
   MenuSubAPIManagement,
 } from "./ui/Icons/generated";
 import { ConnectionStatus } from "../lib/constants";
+import { Switcher as SwitcherType } from "../Playground";
 
 interface SidebarProps {
   connectionStatus: ConnectionStatus;
@@ -32,6 +38,8 @@ interface SidebarProps {
   enableConfiguration?: boolean;
   onConfigurationClick?: () => void;
   disableConnectionButton?: boolean;
+  endpointSwitcher?: SwitcherType;
+  visibilitySwitcher?: SwitcherType;
 }
 
 const Sidebar = ({
@@ -52,7 +60,9 @@ const Sidebar = ({
   tokenPlaceholder,
   enableConfiguration,
   onConfigurationClick,
-  disableConnectionButton
+  disableConnectionButton,
+  endpointSwitcher,
+  visibilitySwitcher,
 }: SidebarProps) => {
   const [showBearerToken, setShowBearerToken] = useState(false);
   const [showPassword, toggleInputType] = React.useState(false);
@@ -65,6 +75,20 @@ const Sidebar = ({
       <Box width="100%" maxWidth={400} mx="auto">
         <Box display="flex" flexDirection="column" gap={3}>
           <Box mb={2} display="flex" flexDirection="column" gap={3}>
+            {endpointSwitcher && (
+              <Switcher
+                switcher={endpointSwitcher}
+                defaultLabel="Endpoint"
+                testId="endpoint-switcher"
+              />
+            )}
+            {visibilitySwitcher && (
+              <Switcher
+                switcher={visibilitySwitcher}
+                defaultLabel="Visibility"
+                testId="visibility-switcher"
+              />
+            )}
             {isUrlFetching ? (
               <Box
                 display="flex"
