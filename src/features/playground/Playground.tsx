@@ -100,15 +100,15 @@ const Playground = ({
     (async () => {
       if (disconnectOnUrlChange && connectionStatus === "connected") {
         await disconnectMcpServer();
+        if (cancelled) return;
         setTools([]);
         setSelectedTool(null);
         setNextToolCursor(undefined);
         cacheToolOutputSchemas([]);
         clearHistory();
       }
-      if (!cancelled) {
-        setUrl(initialUrl || "");
-      }
+      if (cancelled) return;
++     setUrl(initialUrl || "");
     })();
     return () => {
       cancelled = true;

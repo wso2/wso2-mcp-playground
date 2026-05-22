@@ -8,7 +8,6 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import React, { useEffect, useState } from 'react';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import Notification from './ui/Notification/Notification';
-import { Promote } from './ui/Icons/generated';
 import TextInput from './ui/TextInput/TextInput';
 import Button from './ui/Button/Button';
 import Checkbox from './ui/Checkbox/Checkbox';
