@@ -51,6 +51,7 @@ interface PlaygroundProps {
   disableConnectionButton?: boolean;
   endpointSwitcher?: Switcher;
   visibilitySwitcher?: Switcher;
+  disconnectOnUrlChange?: boolean;
   theme?: ThemeOptions;
 }
 
@@ -70,6 +71,7 @@ const Playground = ({
   disableConnectionButton,
   endpointSwitcher,
   visibilitySwitcher,
+  disconnectOnUrlChange,
   theme,
 }: PlaygroundProps) => {
   const classes = useStyles();
@@ -87,8 +89,30 @@ const Playground = ({
     tools: null,
   });
 
+  const isInitialUrlRef = useRef(true);
   useEffect(() => {
-    setUrl(initialUrl || "");
+    if (isInitialUrlRef.current) {
+      isInitialUrlRef.current = false;
+      setUrl(initialUrl || "");
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      if (disconnectOnUrlChange && connectionStatus === "connected") {
+        await disconnectMcpServer();
+        setTools([]);
+        setSelectedTool(null);
+        setNextToolCursor(undefined);
+        cacheToolOutputSchemas([]);
+        clearHistory();
+      }
+      if (!cancelled) {
+        setUrl(initialUrl || "");
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [initialUrl]);
 
   useEffect(() => {
