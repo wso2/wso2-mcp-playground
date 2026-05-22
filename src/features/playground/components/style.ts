@@ -31,20 +31,34 @@ export const useStyles = makeStyles((theme: any) => ({
     border: `1px solid ${theme.palette.grey[200]}`,
     marginTop: theme.spacing(1),
   },
+  toolsLayout: {
+    display: 'flex',
+    gap: theme.spacing(2),
+    alignItems: 'stretch',
+    flexDirection: 'column',
+    [theme.breakpoints.up('md')]: {
+      flexDirection: 'row',
+    },
+  },
   toolPanel: {
-    // borderRight: `1px solid ${theme.palette.grey[200]}`,
+    display: 'flex',
+    flex: 1,
+    minWidth: 0,
+    padding: 0,
   },
   resultSection: {
     borderRadius: 8,
     border: '1px solid #e5e7eb',
     backgroundColor: '#fff',
     marginTop: theme.spacing(1),
+    flex: 1,
   },
   resultSectionHeader: {
     padding: theme.spacing(1, 2),
     borderBottom: '1px solid #e5e7eb',
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   title: {
     fontWeight: 600,
@@ -80,11 +94,9 @@ export const useStyles = makeStyles((theme: any) => ({
     border: `1px solid ${theme.palette.grey[200]}`,
   },
   copyButton: {
-    position: 'absolute',
     top: 8,
     right: 8,
     minWidth: 0,
-    padding: 6,
   },
   copyIcon: {
     fontSize: 16,

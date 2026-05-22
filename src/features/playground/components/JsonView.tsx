@@ -1,10 +1,8 @@
 import { useState, memo, useMemo, useCallback, useEffect } from 'react';
 import { Box } from '@mui/material';
 import clsx from 'clsx';
-import {
-  Copy,
-  Tick,
-} from './ui/Icons/generated';
+import { Copy } from './ui/Icons/generated';
+import CheckIcon from "@mui/icons-material/Check";
 import JsonViewer from './ui/JsonViewer/JsonViewer';
 import IconButton from './ui/IconButton/IconButton';
 import type { JsonValue } from '../utils/jsonUtils';
@@ -94,13 +92,17 @@ const JsonView = memo(
         <Box>
           {withCopyButton && (
             <IconButton
-              variant="subtle"
+              variant="text"
               className={classes.copyButton}
+              sx={{
+                position: 'absolute',
+                padding: '2px',
+              }}
               onClick={handleCopy}
               testId="playground-response-copy"
             >
               {copied ? (
-                <Tick className={classes.copySuccessIcon} />
+                <CheckIcon fontSize="small" />
               ) : (
                 <Copy className={classes.copyIcon} />
               )}

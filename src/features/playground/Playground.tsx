@@ -285,18 +285,18 @@ const Playground = ({
             style={{
               display: "flex",
               flexDirection: "column",
+              position: "relative",
+              ...(mcpClient
+                ? {
+                    height: "auto",
+                    paddingBottom: 250,
+                  }
+                : {}),
             }}
           >
             {mcpClient ? (
               <>
-                {/* Main Content Area - Scrollable */}
-                <Box
-                  style={{
-                    flex: "1 1 auto",
-                    overflow: "auto",
-                    minHeight: 0,
-                  }}
-                >
+                <Box>
                   <Tabs
                     defaultValue="tools"
                     className="w-full p-4"

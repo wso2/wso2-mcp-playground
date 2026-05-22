@@ -147,49 +147,44 @@ const Sidebar = ({
                 placeholder="Enter Header Name"
               />
             )}
-            {isTokenFetching ? (
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                minHeight="60px"
-              >
-                <CircularProgress size={30} />
-              </Box>
-            ) : (
-              <TextInput
-                label="Token"
-                testId="Authentication-Bearer-Token"
-                fullWidth
-                value={token}
-                type={showPassword ? "text" : "password"}
-                onChange={(e) => setToken(e.target.value)}
-                placeholder={tokenPlaceholder || "Add Your Token"}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={handleEndButtonClick}
-                      size="small"
-                      variant="text"
-                      color="primary"
-                      testId="secret"
-                    >
-                      {showPassword ? <ShowPassword /> : <HidePassword />}
-                    </IconButton>
-                    <IconButton
-                      onClick={() => handleCopy("token", token)}
-                      size="small"
-                      variant="text"
-                      color="primary"
-                      testId="copy-token"
-                      disabled={!token}
-                    >
-                      {copiedField === "token" ? <CheckIcon fontSize="small" /> : <Copy />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            )}
+            <TextInput
+              label="Token"
+              testId="Authentication-Bearer-Token"
+              fullWidth
+              value={token}
+              type={showPassword ? "text" : "password"}
+              onChange={(e) => setToken(e.target.value)}
+              placeholder={tokenPlaceholder || "Add Your Token"}
+              disabled={isTokenFetching}
+              endAdornment={
+                <InputAdornment position="end">
+                  {isTokenFetching && (
+                    <Box display="flex" alignItems="center" mx={0.5}>
+                      <CircularProgress size={16} />
+                    </Box>
+                  )}
+                  <IconButton
+                    onClick={handleEndButtonClick}
+                    size="small"
+                    variant="text"
+                    color="primary"
+                    testId="secret"
+                  >
+                    {showPassword ? <ShowPassword /> : <HidePassword />}
+                  </IconButton>
+                  <IconButton
+                    onClick={() => handleCopy("token", token)}
+                    size="small"
+                    variant="text"
+                    color="primary"
+                    testId="copy-token"
+                    disabled={!token}
+                  >
+                    {copiedField === "token" ? <CheckIcon fontSize="small" /> : <Copy />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
             {handleTokenRegenerate && (
               <Box mt={1}>
                 <Button

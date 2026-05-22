@@ -6,7 +6,7 @@ import {
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import React, { useEffect, useState } from 'react';
-import { Box, CircularProgress, Grid, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import Notification from './ui/Notification/Notification';
 import { Promote } from './ui/Icons/generated';
 import TextInput from './ui/TextInput/TextInput';
@@ -20,6 +20,7 @@ import ListPane from './ListPane';
 import JsonView from './JsonView';
 import ToolResults from './ToolResults';
 import { useStyles } from './style';
+import { PlayArrowRounded } from '@mui/icons-material';
 
 const ToolsTab = ({
   tools,
@@ -59,8 +60,8 @@ const ToolsTab = ({
 
   return (
     <TabsContent value="tools">
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={6} className={classes.toolPanel}>
+      <Box className={classes.toolsLayout}>
+        <Box className={classes.toolPanel}>
           <ListPane
             items={tools}
             listItems={listTools}
@@ -86,8 +87,8 @@ const ToolsTab = ({
             buttonText={nextCursor ? 'List More Tools' : 'List Tools'}
             isButtonDisabled={!nextCursor && tools.length > 0}
           />
-        </Grid>
-        <Grid item xs={12} md={6}>
+        </Box>
+        <Box className={classes.toolPanel}>
           <Box className={classes.resultSection}>
             <Box className={classes.resultSectionHeader}>
               <Typography variant="h4">
@@ -297,7 +298,7 @@ const ToolsTab = ({
                         }}
                         disabled={isToolRunning}
                         testId="run-tool-btn"
-                        startIcon={<Promote className="w-4 h-4" />}
+                        startIcon={<PlayArrowRounded fontSize='inherit'/>}
                       >
                         Run Tool
                       </Button>
@@ -315,8 +316,8 @@ const ToolsTab = ({
               </div>
             )}
           </Box>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </TabsContent>
   );
 };
