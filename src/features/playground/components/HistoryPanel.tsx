@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: any) => ({
     overflow: 'hidden',
   },
   historyHeader: {
-    padding: theme.spacing(1, 1, 1, 1),
+    padding: theme.spacing(1),
     borderBottom: '1px solid #e5e7eb',
     display: 'flex',
     justifyContent: 'space-between',

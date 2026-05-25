@@ -96,7 +96,7 @@ const JsonView = memo(
               className={classes.copyButton}
               sx={{
                 position: 'absolute',
-                padding: '2px',
+                p: 0.25,
               }}
               onClick={handleCopy}
               testId="playground-response-copy"
