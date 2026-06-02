@@ -17,6 +17,11 @@ const useStyles = makeStyles((theme: any) => ({
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10,
   },
   historyHeader: {
     padding: theme.spacing(1),
@@ -139,11 +144,6 @@ const HistoryPanel: React.FC<HistoryPanelProps> = ({ history }) => {
     <Box
       className={classes.historyContainer}
       style={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: 10,
         height: `${height}px`,
       }}
     >
