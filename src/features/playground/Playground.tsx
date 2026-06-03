@@ -23,6 +23,18 @@ import ToolsTab from "./components/ToolsTab";
 import HistoryPanel from "./components/HistoryPanel";
 import { useStyles } from "./style";
 
+export type SwitcherOption = {
+  label: string;
+  value: string;
+};
+
+export type Switcher = {
+  label?: string;
+  options: SwitcherOption[];
+  value: string;
+  onChange: (value: string) => void;
+};
+
 interface PlaygroundProps {
   url?: string;
   token?: string;
@@ -37,6 +49,9 @@ interface PlaygroundProps {
   enableConfiguration?: boolean;
   onConfigurationClick?: () => void;
   disableConnectionButton?: boolean;
+  endpointSwitcher?: Switcher;
+  visibilitySwitcher?: Switcher;
+  disconnectOnUrlChange?: boolean;
   theme?: ThemeOptions;
 }
 
@@ -54,6 +69,9 @@ const Playground = ({
   enableConfiguration,
   onConfigurationClick,
   disableConnectionButton,
+  endpointSwitcher,
+  visibilitySwitcher,
+  disconnectOnUrlChange,
   theme,
 }: PlaygroundProps) => {
   const classes = useStyles();
@@ -71,8 +89,30 @@ const Playground = ({
     tools: null,
   });
 
+  const isInitialUrlRef = useRef(true);
   useEffect(() => {
-    setUrl(initialUrl || "");
+    if (isInitialUrlRef.current) {
+      isInitialUrlRef.current = false;
+      setUrl(initialUrl || "");
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      if (disconnectOnUrlChange && connectionStatus === "connected") {
+        await disconnectMcpServer();
+        if (cancelled) return;
+        setTools([]);
+        setSelectedTool(null);
+        setNextToolCursor(undefined);
+        cacheToolOutputSchemas([]);
+        clearHistory();
+      }
+      if (cancelled) return;
++     setUrl(initialUrl || "");
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [initialUrl]);
 
   useEffect(() => {
@@ -213,7 +253,7 @@ const Playground = ({
     <Box className={classes.componentLevelPageContainer}>
       {!disableTitle && <Typography variant="h3">MCP Playground</Typography>}
       <Grid container md={12}>
-        <Grid item xs={12} md={3} className={classes.playgroundSlider}>
+        <Grid item xs={12} md={4} className={classes.playgroundSlider}>
           <Sidebar
             connectionStatus={connectionStatus}
             connectionError={connectionError}
@@ -235,6 +275,8 @@ const Playground = ({
             enableConfiguration={enableConfiguration}
             onConfigurationClick={onConfigurationClick}
             disableConnectionButton={disableConnectionButton}
+            endpointSwitcher={endpointSwitcher}
+            visibilitySwitcher={visibilitySwitcher}
           />
         </Grid>
         <Grid item xs={12} md={8} className={classes.playgroundRightSlider}>
@@ -243,18 +285,18 @@ const Playground = ({
             style={{
               display: "flex",
               flexDirection: "column",
+              position: "relative",
+              ...(mcpClient
+                ? {
+                    height: "auto",
+                    paddingBottom: 250,
+                  }
+                : {}),
             }}
           >
             {mcpClient ? (
               <>
-                {/* Main Content Area - Scrollable */}
-                <Box
-                  style={{
-                    flex: "1 1 auto",
-                    overflow: "auto",
-                    minHeight: 0,
-                  }}
-                >
+                <Box>
                   <Tabs
                     defaultValue="tools"
                     className="w-full p-4"

@@ -11,21 +11,25 @@ interface HistoryPanelProps {
 
 const useStyles = makeStyles((theme: any) => ({
   historyContainer: {
-    borderRadius: '8px 8px 0 0',
+    borderRadius: '8px',
     border: '1px solid #e5e7eb',
     backgroundColor: '#fff',
-    borderBottom: 'none', // Remove bottom border since resize handle provides it
     display: 'flex',
     flexDirection: 'column',
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10,
   },
   historyHeader: {
-    padding: theme.spacing(1, 2),
+    padding: theme.spacing(1),
     borderBottom: '1px solid #e5e7eb',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#fff',
-    borderRadius: '8px 8px 0 0',
     flexShrink: 0,
   },
   historyTitle: {
@@ -137,19 +141,17 @@ const HistoryPanel: React.FC<HistoryPanelProps> = ({ history }) => {
   };
 
   return (
-    <Box>
-      {/* Resize Handle */}
-      <ResizeHandle 
+    <Box
+      className={classes.historyContainer}
+      style={{
+        height: `${height}px`,
+      }}
+    >
+      <ResizeHandle
         onMouseDown={resizeHandleProps.onMouseDown}
         isResizing={isResizing}
       />
-      
-      {/* History Panel Container */}
-      <Box 
-        className={classes.historyContainer}
-        style={{ height: `${height}px` }}
-      >
-        <Box className={classes.historyHeader}>
+      <Box className={classes.historyHeader}>
           <Typography className={classes.historyTitle}>
             Activity History
           </Typography>
@@ -214,7 +216,6 @@ const HistoryPanel: React.FC<HistoryPanelProps> = ({ history }) => {
             </div>
           )}
         </div>
-      </Box>
     </Box>
   );
 };

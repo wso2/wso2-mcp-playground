@@ -38,7 +38,6 @@ export const useStyles = makeStyles((theme: any) => ({
   playgroundResult: {
     overflow: 'auto',
     height: '100%',
-    borderBottom: `1px solid ${theme.palette.grey[200]}`,
   },
   tabsList: {
     display: 'flex',
@@ -60,6 +59,7 @@ export const useStyles = makeStyles((theme: any) => ({
     backgroundColor: 'transparent',
     transition: 'all 0.2s ease',
     border: '1px solid transparent',
+    cursor: 'pointer',
 
     '&:hover': {
       backgroundColor: '#f1f5f9',

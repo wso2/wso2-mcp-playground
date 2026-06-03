@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Box, CircularProgress, InputAdornment } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  InputAdornment,
+} from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
 import IconButton from "./ui/IconButton/IconButton";
 import TextInput from "./ui/TextInput/TextInput";
+import Switcher from "./ui/Switcher/Switcher";
 import Button from "./ui/Button/Button";
 import {
   Configuration,
+  Copy,
   HidePassword,
   MenuLogout,
   Refresh,
@@ -12,6 +19,7 @@ import {
   MenuSubAPIManagement,
 } from "./ui/Icons/generated";
 import { ConnectionStatus } from "../lib/constants";
+import { Switcher as SwitcherType } from "../Playground";
 
 interface SidebarProps {
   connectionStatus: ConnectionStatus;
@@ -32,6 +40,8 @@ interface SidebarProps {
   enableConfiguration?: boolean;
   onConfigurationClick?: () => void;
   disableConnectionButton?: boolean;
+  endpointSwitcher?: SwitcherType;
+  visibilitySwitcher?: SwitcherType;
 }
 
 const Sidebar = ({
@@ -52,19 +62,61 @@ const Sidebar = ({
   tokenPlaceholder,
   enableConfiguration,
   onConfigurationClick,
-  disableConnectionButton
+  disableConnectionButton,
+  endpointSwitcher,
+  visibilitySwitcher,
 }: SidebarProps) => {
   const [showBearerToken, setShowBearerToken] = useState(false);
   const [showPassword, toggleInputType] = React.useState(false);
+  const [copiedField, setCopiedField] = useState<"url" | "token" | null>(null);
   const handleEndButtonClick = () => {
     toggleInputType(!showPassword);
   };
+
+  const handleCopy = (field: "url" | "token", value?: string) => {
+    if (!value) return;
+    navigator.clipboard.writeText(value).then(() => {
+      setCopiedField(field);
+      setTimeout(() => {
+        setCopiedField((current) => (current === field ? null : current));
+      }, 1500);
+    });
+  };
+
+  const renderCopyAdornment = (field: "url" | "token", value?: string) => (
+    <InputAdornment position="end">
+      <IconButton
+        onClick={() => handleCopy(field, value)}
+        size="small"
+        variant="text"
+        color="primary"
+        testId={`copy-${field}`}
+        disabled={!value}
+      >
+        {copiedField === field ? <CheckIcon fontSize="small" /> : <Copy />}
+      </IconButton>
+    </InputAdornment>
+  );
 
   return (
     <Box>
       <Box width="100%" maxWidth={400} mx="auto">
         <Box display="flex" flexDirection="column" gap={3}>
           <Box mb={2} display="flex" flexDirection="column" gap={3}>
+            {endpointSwitcher && (
+              <Switcher
+                switcher={endpointSwitcher}
+                defaultLabel="Endpoint"
+                testId="endpoint-switcher"
+              />
+            )}
+            {visibilitySwitcher && (
+              <Switcher
+                switcher={visibilitySwitcher}
+                defaultLabel="Visibility"
+                testId="visibility-switcher"
+              />
+            )}
             {isUrlFetching ? (
               <Box
                 display="flex"
@@ -82,6 +134,7 @@ const Sidebar = ({
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 placeholder="Enter URL"
+                endAdornment={renderCopyAdornment("url", url)}
               />
             )}
             {shouldSetHeaderNameExternally && (
@@ -94,44 +147,49 @@ const Sidebar = ({
                 placeholder="Enter Header Name"
               />
             )}
-            {isTokenFetching ? (
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                minHeight="60px"
-              >
-                <CircularProgress size={30} />
-              </Box>
-            ) : (
-              <TextInput
-                label="Token"
-                testId="Authentication-Bearer-Token"
-                fullWidth
-                value={token}
-                type={showPassword ? "text" : "password"}
-                onChange={(e) => setToken(e.target.value)}
-                placeholder={tokenPlaceholder || "Add Your Token"}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={handleEndButtonClick}
-                      size="small"
-                      variant="text"
-                      color="primary"
-                      testId="secret"
-                    >
-                      {showPassword ? <ShowPassword /> : <HidePassword />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            )}
+            <TextInput
+              label="Token"
+              testId="Authentication-Bearer-Token"
+              fullWidth
+              value={token}
+              type={showPassword ? "text" : "password"}
+              onChange={(e) => setToken(e.target.value)}
+              placeholder={tokenPlaceholder || "Add Your Token"}
+              disabled={isTokenFetching}
+              endAdornment={
+                <InputAdornment position="end">
+                  {isTokenFetching && (
+                    <Box display="flex" alignItems="center" mx={0.5}>
+                      <CircularProgress size={16} />
+                    </Box>
+                  )}
+                  <IconButton
+                    onClick={handleEndButtonClick}
+                    size="small"
+                    variant="text"
+                    color="primary"
+                    testId="secret"
+                  >
+                    {showPassword ? <ShowPassword /> : <HidePassword />}
+                  </IconButton>
+                  <IconButton
+                    onClick={() => handleCopy("token", token)}
+                    size="small"
+                    variant="text"
+                    color="primary"
+                    testId="copy-token"
+                    disabled={!token}
+                  >
+                    {copiedField === "token" ? <CheckIcon fontSize="small" /> : <Copy />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
             {handleTokenRegenerate && (
               <Box mt={1}>
                 <Button
                   fullWidth
-                  variant="subtle"
+                  variant="outlined"
                   onClick={handleTokenRegenerate}
                   data-testid="auth-button"
                   aria-expanded={showBearerToken}
