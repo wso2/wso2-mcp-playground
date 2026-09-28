@@ -1,17 +1,18 @@
-import { Client } from '@modelcontextprotocol/sdk/client/index.js';
-import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import {
-  ClientRequest,
-  Request,
-  Result,
+  Client,
+  RequestMethod,
+  RequestOptions,
+  ResultTypeMap,
   ServerCapabilities,
-} from '@modelcontextprotocol/sdk/types.js';
-import { RequestOptions } from '@modelcontextprotocol/sdk/shared/protocol.js';
+  StreamableHTTPClientTransport,
+  Transport,
+} from '@modelcontextprotocol/client';
 import { useState } from 'react';
-import { Transport } from '@modelcontextprotocol/sdk/shared/transport.js';
-import { z } from 'zod';
-import { ConnectionStatus, HistoryEvent, HistoryEventType } from '../constants';
-import { Notification } from '../notificationTypes';
+import {
+  ConnectionStatus,
+  HistoryEvent,
+  HistoryEventType,
+} from '../constants';
 
 interface UseConnectionOptions {
   url: string | undefined;
@@ -80,11 +81,10 @@ export function useConnection({
     });
   }
 
-  const makeRequest = async <T extends z.ZodType>(
-    request: ClientRequest,
-    schema: T,
+  const makeRequest = async <M extends RequestMethod>(
+    request: { method: M; params?: Record<string, unknown> },
     options?: RequestOptions & { suppressToast?: boolean }
-  ): Promise<z.output<T>> => {
+  ): Promise<ResultTypeMap[M]> => {
     if (!mcpClient) {
       const error = 'MCP client not connected';
       addHistoryEvent('error', 'makeRequest', error);
@@ -104,7 +104,7 @@ export function useConnection({
         maxTotalTimeout: 60000,
       };
       
-      const result = await mcpClient.request(request, schema, mcpRequestOptions);
+      const result = await mcpClient.request(request, mcpRequestOptions);
       const responseTime = Date.now() - startTime;
       
       addHistoryEvent('info', 'makeRequest', `MCP request completed: ${request.method}`, {
@@ -148,7 +148,7 @@ export function useConnection({
       headerName,
     });
     
-    const client = new Client<Request, Notification, Result>(
+    const client = new Client(
       {
         name: 'mcp-playground',
         version: '0.13.0',

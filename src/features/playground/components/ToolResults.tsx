@@ -1,9 +1,11 @@
 import React from 'react';
 import {
-  CallToolResultSchema,
+  CallToolResult,
   CompatibilityCallToolResult,
+  StandardSchemaV1,
   Tool,
-} from '@modelcontextprotocol/sdk/types.js';
+  specTypeSchemas,
+} from '@modelcontextprotocol/client';
 import { Box, Typography } from '@mui/material';
 import JsonView from './JsonView';
 import { validateToolOutput, hasOutputSchema } from '../utils/schemaUtils';
@@ -67,20 +69,26 @@ const ToolResults = ({ toolResult, selectedTool }: ToolResultsProps) => {
   if (!toolResult) return null;
 
   if ('content' in toolResult) {
-    const parsedResult = CallToolResultSchema.safeParse(toolResult);
-    if (!parsedResult.success) {
+    const parsedResult = specTypeSchemas.CallToolResult['~standard'].validate(
+      toolResult
+    ) as StandardSchemaV1.Result<CallToolResult>;
+    if (parsedResult.issues) {
       return (
         <>
           <h4 className="font-semibold mb-2">Invalid Tool Result:</h4>
           <JsonView data={toolResult} />
           <h4 className="font-semibold mb-2">Errors:</h4>
-          {parsedResult.error.errors.map((error, idx) => (
-            <JsonView data={error} />
+          {parsedResult.issues.map((issue, idx) => (
+            <JsonView data={issue} />
           ))}
         </>
       );
     }
-    const structuredResult = parsedResult.data;
+    // The spec schemas are not a discriminated union, so the success side is
+    // asserted rather than narrowed by the check above.
+    const structuredResult = (
+      parsedResult as StandardSchemaV1.SuccessResult<CallToolResult>
+    ).value;
     const isError = structuredResult.isError ?? false;
 
     let validationResult = null;
@@ -181,7 +189,7 @@ const ToolResults = ({ toolResult, selectedTool }: ToolResultsProps) => {
               </>
             )}
             {structuredResult.content.map((item, index) => (
-              <div key={item.id as string} className="mb-2">
+              <div key={index} className="mb-2">
                 {item.type === 'text' && (
                   <JsonView data={item.text} />
                 )}
@@ -196,7 +204,9 @@ const ToolResults = ({ toolResult, selectedTool }: ToolResultsProps) => {
                   (item.resource?.mimeType?.startsWith('audio/') ? (
                     <audio
                       controls
-                      src={`data:${item.resource.mimeType};base64,${item.resource.blob}`}
+                      src={`data:${item.resource.mimeType};base64,${
+                        (item.resource as { blob?: string }).blob
+                      }`}
                       className="w-full"
                     >
                       <track kind="captions" />
