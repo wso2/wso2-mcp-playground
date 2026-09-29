@@ -65,6 +65,22 @@ const checkContentCompatibility = (
   }
 };
 
+// The SDK rejects a result that does not match the protocol schema and throws, so the
+// playground only ever receives its message — a prefix followed by the validation issues
+// as JSON. Parsing that back out lets the issues render as a tree rather than as one
+// long escaped string, which is otherwise unreadable.
+const parseSdkResultError = (
+  text: string
+): { prefix: string; issues: unknown } | null => {
+  const start = text.indexOf('[');
+  if (!text.startsWith('Invalid result for') || start === -1) return null;
+  try {
+    return { prefix: text.slice(0, start).trim(), issues: JSON.parse(text.slice(start)) };
+  } catch {
+    return null;
+  }
+};
+
 const ToolResults = ({ toolResult, selectedTool }: ToolResultsProps) => {
   if (!toolResult) return null;
 
@@ -95,14 +111,17 @@ const ToolResults = ({ toolResult, selectedTool }: ToolResultsProps) => {
     const toolHasOutputSchema =
       selectedTool && hasOutputSchema(selectedTool.name);
 
+    // Compared against undefined rather than tested for truthiness: the 2.x result schema
+    // accepts false, 0, null and "" as structuredContent, and a truthiness check would report
+    // those valid values as missing. The 1.x schema required an object, so this could not arise.
     if (toolHasOutputSchema) {
-      if (!structuredResult.structuredContent && !isError) {
+      if (structuredResult.structuredContent === undefined && !isError) {
         validationResult = {
           isValid: false,
           error:
             'Tool has an output schema but did not return structured content',
         };
-      } else if (structuredResult.structuredContent) {
+      } else if (structuredResult.structuredContent !== undefined) {
         validationResult = validateToolOutput(
           selectedTool.name,
           structuredResult.structuredContent
@@ -112,7 +131,7 @@ const ToolResults = ({ toolResult, selectedTool }: ToolResultsProps) => {
 
     let compatibilityResult = null;
     if (
-      structuredResult.structuredContent &&
+      structuredResult.structuredContent !== undefined &&
       structuredResult.content.length > 0 &&
       selectedTool &&
       hasOutputSchema(selectedTool.name)
@@ -135,7 +154,7 @@ const ToolResults = ({ toolResult, selectedTool }: ToolResultsProps) => {
             )}
           </Typography>
         </Box>
-        {structuredResult.structuredContent && (
+        {structuredResult.structuredContent !== undefined && (
           <div className="mb-4">
             <h5 className="font-semibold mb-2 text-sm">Structured Content:</h5>
             <div className="bg-gray-50 dark:bg-gray-900 p-3 rounded-lg">
@@ -158,7 +177,7 @@ const ToolResults = ({ toolResult, selectedTool }: ToolResultsProps) => {
             </div>
           </div>
         )}
-        {!structuredResult.structuredContent &&
+        {structuredResult.structuredContent === undefined &&
           validationResult &&
           !validationResult.isValid && (
             <div className="mb-4">
@@ -169,7 +188,7 @@ const ToolResults = ({ toolResult, selectedTool }: ToolResultsProps) => {
           )}
         {structuredResult.content.length > 0 && (
           <div className="mb-4">
-            {structuredResult.structuredContent && (
+            {structuredResult.structuredContent !== undefined && (
               <>
                 <h5 className="font-semibold mb-2 text-sm">
                   Unstructured Content:
@@ -190,9 +209,19 @@ const ToolResults = ({ toolResult, selectedTool }: ToolResultsProps) => {
             )}
             {structuredResult.content.map((item, index) => (
               <div key={index} className="mb-2">
-                {item.type === 'text' && (
-                  <JsonView data={item.text} />
-                )}
+                {item.type === 'text' &&
+                  (() => {
+                    const sdkError = parseSdkResultError(item.text ?? '');
+                    if (!sdkError) return <JsonView data={item.text} />;
+                    return (
+                      <>
+                        <Typography variant="body2" className="mb-2">
+                          {sdkError.prefix}
+                        </Typography>
+                        <JsonView data={sdkError.issues} />
+                      </>
+                    );
+                  })()}
                 {item.type === 'image' && (
                   <img
                     src={`data:${item.mimeType};base64,${item.data}`}
