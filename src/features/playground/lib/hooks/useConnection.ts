@@ -160,6 +160,11 @@ export function useConnection({
             listChanged: true,
           },
         },
+        // Probe with server/discover at connect and take the modern era on
+        // definitive evidence, falling back to the legacy initialize handshake
+        // otherwise. Without this the client opens with initialize only, which
+        // a 2026-07-28 server rejects.
+        versionNegotiation: { mode: 'auto' },
       }
     );
 
