@@ -1,14 +1,10 @@
 import {
-  ClientRequest,
   CompatibilityCallToolResult,
-  CompatibilityCallToolResultSchema,
-  EmptyResultSchema,
-  ListToolsResultSchema,
+  RequestMethod,
   Tool,
-} from "@modelcontextprotocol/sdk/types.js";
+} from "@modelcontextprotocol/client";
 import React, { useEffect, useRef, useState } from "react";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { z } from "zod";
 import { Box, Grid, Typography } from "@mui/material";
 import type { ThemeOptions } from "@mui/material/styles";
 import { MenuSubAPIManagement } from "./components/ui/Icons/generated";
@@ -144,13 +140,12 @@ const Playground = ({
     setErrors((prev) => ({ ...prev, [tabKey]: null }));
   };
 
-  const sendMCPRequest = async <T extends z.ZodType>(
-    request: ClientRequest,
-    schema: T,
+  const sendMCPRequest = async <M extends RequestMethod>(
+    request: { method: M; params?: Record<string, unknown> },
     tabKey?: keyof typeof errors
   ) => {
     try {
-      const response = await makeRequest(request, schema);
+      const response = await makeRequest(request);
       if (tabKey !== undefined) {
         clearError(tabKey);
       }
@@ -177,7 +172,6 @@ const Playground = ({
         method: "tools/list" as const,
         params: nextToolCursor ? { cursor: nextToolCursor } : {},
       },
-      ListToolsResultSchema,
       "tools"
     );
     setTools(response.tools);
@@ -211,7 +205,6 @@ const Playground = ({
             },
           },
         },
-        CompatibilityCallToolResultSchema,
         "tools"
       );
       setToolResult(response);
@@ -334,8 +327,7 @@ const Playground = ({
                               sendMCPRequest(
                                 {
                                   method: "ping" as const,
-                                },
-                                EmptyResultSchema
+                                }
                               )
                                 .then(() => {
                                   addHistoryEvent(
@@ -407,8 +399,7 @@ const Playground = ({
                               sendMCPRequest(
                                 {
                                   method: "ping" as const,
-                                },
-                                EmptyResultSchema
+                                }
                               )
                                 .then(() => {
                                   addHistoryEvent(

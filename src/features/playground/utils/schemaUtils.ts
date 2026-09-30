@@ -1,6 +1,6 @@
 import Ajv from "ajv";
 import type { ValidateFunction } from "ajv";
-import type { Tool } from "@modelcontextprotocol/sdk/types.js";
+import type { Tool } from "@modelcontextprotocol/client";
 import type { JsonValue, JsonSchemaType, JsonObject } from "./jsonUtils";
 
 const ajv = new Ajv();
