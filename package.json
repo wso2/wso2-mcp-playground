@@ -1,6 +1,6 @@
 {
   "name": "@wso2-org/mcp-playground",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "main": "dist/mcp-playground.umd.js",
   "module": "dist/mcp-playground.es.js",
   "exports": {
