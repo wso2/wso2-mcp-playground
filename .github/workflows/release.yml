@@ -29,6 +29,11 @@ on:
           - minor
           - major
 
+# Two releases from the same branch would race for the same version number.
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
@@ -64,12 +69,19 @@ jobs:
           git config --global user.email "${{ secrets.WSO2_APIM_BOT_EMAIL }}"
           git config --global user.name "${{ secrets.WSO2_APIM_BOT_USERNAME }}"
 
+      # Commit and tag locally only; they are pushed after the package is staged, so a
+      # failed release leaves nothing behind on the branch.
       - name: Bump version and create tag
+        id: version
         run: |
           npm version ${{ github.event.inputs.Type }}
-          git push --follow-tags
+          echo "tag=v$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
 
       # The trusted publisher only allows staged publishes. A maintainer approves the
       # staged version with 2FA on npmjs.com (Staged Packages) or with `npm stage approve`.
       - name: Stage package on npm
         run: npm stage publish --access public --verbose
+
+      # --atomic pushes the version commit and its tag together, or neither.
+      - name: Push version commit and tag
+        run: git push --atomic origin "HEAD:${{ github.ref_name }}" "${{ steps.version.outputs.tag }}"
