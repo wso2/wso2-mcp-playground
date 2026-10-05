@@ -1,6 +1,10 @@
 {
   "name": "@wso2-org/mcp-playground",
   "version": "2.2.4",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wso2/wso2-mcp-playground.git"
+  },
   "main": "dist/mcp-playground.umd.js",
   "module": "dist/mcp-playground.es.js",
   "exports": {
