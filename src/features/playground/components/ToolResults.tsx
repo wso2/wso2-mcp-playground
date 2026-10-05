@@ -74,7 +74,7 @@ const ToolResults = ({ toolResult, selectedTool }: ToolResultsProps) => {
           <h4 className="font-semibold mb-2">Invalid Tool Result:</h4>
           <JsonView data={toolResult} />
           <h4 className="font-semibold mb-2">Errors:</h4>
-          {parsedResult.error.errors.map((error, idx) => (
+          {parsedResult.error.issues.map((error, idx) => (
             <JsonView data={error} />
           ))}
         </>
