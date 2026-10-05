@@ -49,7 +49,7 @@ jobs:
           node-version: '22'
           registry-url: 'https://registry.npmjs.org'
 
-      # Trusted publishing needs npm 11.5.1 or newer; Node 22 ships npm 10.
+      # Staged publishing needs npm 11.15.0 or newer; Node 22 ships npm 10.
       - name: Upgrade npm
         run: npm install -g npm@latest
 
@@ -69,5 +69,7 @@ jobs:
           npm version ${{ github.event.inputs.Type }}
           git push --follow-tags
 
-      - name: Publish to npm
-        run: npm publish --access public --verbose
+      # The trusted publisher only allows staged publishes. A maintainer approves the
+      # staged version with 2FA on npmjs.com (Staged Packages) or with `npm stage approve`.
+      - name: Stage package on npm
+        run: npm stage publish --access public --verbose
