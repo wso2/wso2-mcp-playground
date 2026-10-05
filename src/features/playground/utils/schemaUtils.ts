@@ -1,9 +1,12 @@
 import Ajv from "ajv";
 import type { ValidateFunction } from "ajv";
+import addFormats from "ajv-formats";
 import type { Tool } from "@modelcontextprotocol/sdk/types.js";
 import type { JsonValue, JsonSchemaType, JsonObject } from "./jsonUtils";
 
-const ajv = new Ajv();
+// strict: false keeps ajv 6 behaviour for schemas with unknown keywords or formats
+const ajv = new Ajv({ strict: false });
+addFormats(ajv);
 
 // Cache for compiled validators
 const toolOutputValidators = new Map<string, ValidateFunction>();
